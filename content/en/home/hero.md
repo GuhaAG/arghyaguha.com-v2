@@ -18,7 +18,7 @@ hero_media = "/img/portrait.webp"
 
 [[btn]]
   url = "/blog"
-  label = 'Read my blog'
+  label = 'Blog'
 
 
 [[btn]]
