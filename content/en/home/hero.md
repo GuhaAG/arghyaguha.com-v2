@@ -23,7 +23,7 @@ hero_media = "/img/portrait.webp"
 
 [[btn]]
   url = "#contact"
-  label = 'Contact me'
+  label = 'Contact'
 
 +++
 
