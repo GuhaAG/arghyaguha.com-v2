@@ -28,3 +28,15 @@ command = "hugo --gc --minify -b $DEPLOY_PRIME_URL"
 
 [context.next.environment]
 HUGO_ENABLEGITINFO = "true"
+
+[[redirects]]
+  from = "/blog"
+  to = "https://dev.to/guha"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/resume"
+  to = "https://drive.google.com/file/d/1QfZ5IwYYpU-Vs7e0-iJ8lHTCZQMpY7BU/view"
+  status = 301
+  force = true   

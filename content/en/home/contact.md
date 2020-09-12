@@ -25,13 +25,13 @@ label = "Your name"
 type = "text"
 # minimum input length
 minlength = "3"
-# maxlength = "25"
+maxlength = "25"
 name = "name"
 # pattern matching
-pattern = "[a-zA-Z]"
+# pattern = "[a-zA-Z]"
 placeholder = "Name"
 # The input is required to submit the form
-# required = true
+required = true
 
 [[inputs]]
 label = "Your email"

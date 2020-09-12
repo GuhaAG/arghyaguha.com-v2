@@ -10,14 +10,14 @@ hero_media = "/img/portrait.webp"
 # Add as much button as you want
 [[btn]]
 	# The url of the button
-  url = "https://drive.google.com/file/d/1QfZ5IwYYpU-Vs7e0-iJ8lHTCZQMpY7BU/view"
+  url = "/resume"
 	# The text of the button
   label = "Resume"
 	# Primary color
 	primary = true
 
 [[btn]]
-  url = "https://dev.to/guha"
+  url = "/blog"
   label = 'Read my blog'
 
 

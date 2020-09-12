@@ -71,7 +71,7 @@ weight = 10
 [[menu.main]]
 identifier = "blog" # identifier is use for translations
 pre = "" # pre is inserted before the translation (icons, image, etc)
-url = "https://dev.to/guha" 
+url = "/blog" 
 weight = 20 
 
 [[menu.main]]
