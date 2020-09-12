@@ -2,6 +2,6 @@
 
 This is my website hosted at arghyaguha.com
 
-Built using Hugo
+Built using Hugo.
 
-See [instructions](https://github.com/negrel/hugo-theme-pico/)
+See [instructions](https://github.com/negrel/hugo-theme-pico/) on using the theme.
