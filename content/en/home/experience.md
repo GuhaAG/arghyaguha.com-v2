@@ -12,7 +12,7 @@ date_format = "Jan 2006" # Date format https://gohugo.io/functions/dateformat/#r
 [[period]]
   title = "Backend Engineer"
   subtitle = "Rakuten Inc."
-  location = "Tokyo, JP"
+  location = "Tokyo, Japan"
   date_start = "2019-11-11"
   date_end = ""
   description = "Developing highly performant and scalable APIs connecting GIS dashboards and mobile SDKs to data engineering pipelines."
@@ -20,7 +20,7 @@ date_format = "Jan 2006" # Date format https://gohugo.io/functions/dateformat/#r
 [[period]]
   title = "Full-stack Software Engineer"
   subtitle = "Sapiat"
-  location = "Tokyo, JP"
+  location = "Tokyo, Japan"
   date_start = "2019-01-01"
   date_end = "2019-10-30"
   description = "Developing a proprietary fintech dashboard dealing with investment portfolios and risk management."
@@ -28,7 +28,7 @@ date_format = "Jan 2006" # Date format https://gohugo.io/functions/dateformat/#r
 [[period]]
   title = "Senior Systems Engineer"
   subtitle = "Takeover Holdings Co. Ltd."
-  location = "Tokyo, JP"
+  location = "Tokyo, Japan"
   date_start = "2017-11-26"
   date_end = "2018-12-31"
   description = "Developing an airbnb like vacation rental system for the Japanese market."
@@ -36,7 +36,7 @@ date_format = "Jan 2006" # Date format https://gohugo.io/functions/dateformat/#r
 [[period]]
   title = "Senior Software Engineer & Team Lead"
   subtitle = "Works Applications Co. Ltd."
-  location = "Tokyo, JP"
+  location = "Tokyo, Japan"
   date_start = "2017-01-01"
   date_end = "2018-11-23"
   description = "Leading a team of engineers and consultants, developing an e-commerce package suite."    
