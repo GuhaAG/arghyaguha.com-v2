@@ -27,7 +27,7 @@ date_format = "Jan 2006" # Date format https://gohugo.io/functions/dateformat/#r
 
 [[period]]
   title = "Senior Systems Engineer"
-  subtitle = "Takeover Holdings Co. Ltd."
+  subtitle = "Takeover Holdings Inc."
   location = "Tokyo, Japan"
   date_start = "2017-11-26"
   date_end = "2018-12-31"
