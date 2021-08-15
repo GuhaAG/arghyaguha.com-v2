@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>github on arghya guha</title>
+    <link>/tags/github/</link>
+    <description>Recent content in github on arghya guha</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>© 2021 Arghya Guha</copyright>
+    <lastBuildDate>Mon, 10 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/github/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Remove sensitive data from your git repository</title>
+      <link>/post/remove-git-secrets/</link>
+      <pubDate>Mon, 10 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/remove-git-secrets/</guid>
+      <description>&lt;p&gt;Remove accidentally pushed sensitive data from your git repository without leaving a trace.&lt;/p&gt;
+&lt;p&gt;This article was first published on my dev.to page, check it here - &lt;a href=&#34;https://dev.to/guha/remove-sensitive-data-from-your-git-repository-1ia2&#34;&gt;https://dev.to/guha/remove-sensitive-data-from-your-git-repository-1ia2&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

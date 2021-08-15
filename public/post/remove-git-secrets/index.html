@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head><title>Remove sensitive data from your git repository &ndash; arghya guha</title>
+<meta name="description" content="My name is Arghya Guha and I’m a Software Engineer &amp; Systems Architect with almost a decade of experience building enterprise web applications, currently coding backends and APIs for the data science division of one of Japan’s tech giants.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+
+
+<link rel="stylesheet" href="css/colour/gruvbox-dark.css">
+<link rel="stylesheet" href="css/colour/dark-mode.css">
+<link rel="stylesheet" href="css/risotto.css">
+<link rel="stylesheet" href="css/custom.css">
+</head>
+
+    <body>
+        <div class="page">
+
+            <header class="page__header"><h1 class="page__logo"><a href="" class="page__logo-inner">arghya guha</a></h1>
+<nav class="page__nav main-nav">
+    <ul>
+    
+    
+    <li class="main-nav__item"><a class="nav-main-item" href="/about/" title="">About</a></li>
+    
+    <li class="main-nav__item"><a class="nav-main-item active" href="/post/" title="Posts">Posts</a></li>
+    
+    </ul>
+</nav>
+
+</header>
+
+            <section class="page__body">
+    <header class="content__header">
+        <h1>Remove sensitive data from your git repository</h1>
+    </header>
+    <div class="content__body">
+        <p>Remove accidentally pushed sensitive data from your git repository without leaving a trace.</p>
+<p>This article was first published on my dev.to page, check it here - <a href="https://dev.to/guha/remove-sensitive-data-from-your-git-repository-1ia2">https://dev.to/guha/remove-sensitive-data-from-your-git-repository-1ia2</a>.</p>
+<hr>
+<h3 id="why">Why</h3>
+<p>We&rsquo;ve all done it at some point or the other - committed and pushed a password or an API key into a remote repository.
+Rookie mistake and yet there are <a href="https://www.ndss-symposium.org/wp-content/uploads/2019/02/ndss2019_04B-3_Meli_paper.pdf">thousands</a> of secrets pushed into public github repositories every single day.</p>
+<p>So what do you do when that happens ? Well, the first thing you <em>MUST</em> do is invalidate the key/password immediately.</p>
+<blockquote>
+<p>Invalidating the secret is absolutely <em>a must</em> and especially if you are using a third party API key make sure to contact the API provider to ensure the key is invalidated.</p>
+</blockquote>
+<p>###What next though ?</p>
+<p>Here in this article i will go over two ways you can clean up your repository after the erroneous push.</p>
+<blockquote>
+<p>Why not just delete the file/data and commit and push again. That should fix it right ?
+Nope. The beauty of Git is that it stores the history of every file. So even if your latest commit did remove the data, it still exists in the repository - on your local and on the remote.</p>
+</blockquote>
+<h2 id="the-git-rebase-approach">The <code>git rebase</code> approach</h2>
+<p>This approach is great if you&rsquo;re only one or two commits ahead of your mistake but keep in mind you will have to fix every commit that contains the bad data.</p>
+<h3 id="how">How</h3>
+<ul>
+<li>Fix your local branch (delete the files/remove the keys etc).</li>
+<li>Stage and Commit your changes.</li>
+<li><code>git rebase -i HEAD~n</code></li>
+</ul>
+<blockquote>
+<p>Here <code>n</code> is the number of commits you want to rebase</p>
+</blockquote>
+<p>Let&rsquo;s look at an example screen of what this will do for you</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/i/b0qwu8ltjp3gfoun3pe8.png" alt="rebase editor example"></p>
+<ul>
+<li>
+<p>Change <code>pick</code> to <code>drop</code> to delete each commit that contains
+the data you want to get rid of.</p>
+</li>
+<li>
+<p>Fix conflicts if any.</p>
+</li>
+<li>
+<p>Stage the changes.</p>
+</li>
+<li>
+<p><code>git rebase --continue</code></p>
+</li>
+</ul>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/i/snxu8yv9mmbo0igp5tie.png" alt="Alt Text"></p>
+<ul>
+<li>Commit and force push (<code>git push -uf...</code>) changes to remote.</li>
+</ul>
+<p>And that&rsquo;s it ! Check your repo history, the bad data should be gone.</p>
+<blockquote>
+<p>While removing sensitive data is probably the most common use-case, another common scenario is to get rid of temp files that you committed by mistake. For instance it is common to have large temp files in a machine learning project (datasets etc..) and pushing them into your repository by mistake might slow it down to a crawl.</p>
+</blockquote>
+<h2 id="the-git-filter-branch-approach">The <code>git filter-branch</code> approach</h2>
+<p>This command will remove the file(s) with the bad data from your repository history.
+For this reason it is important to know that <em>you will have to do this for every <code>path</code> the file has resided on. What that means is that for instance if you changed the directory name you will have to do this for the old name/path and the new one as well because git keeps both records in its history.</em></p>
+<h3 id="how-1">How</h3>
+<ul>
+<li>Run the following on your local</li>
+</ul>
+<pre><code>   git filter-branch --force --index-filter \
+    'git rm --cached --ignore-unmatch FILE/PATH/HERE' \
+        --prune-empty --tag-name-filter cat -- --all
+</code></pre><blockquote>
+<p>If you have any stashed changes you will lose them.</p>
+</blockquote>
+<ul>
+<li>Force push your changes to remote.</li>
+</ul>
+<h3 id="food-for-thought">Food for thought</h3>
+<p>So that&rsquo;s some information on two common ways of repository cleanup, but always make sure you understand what you are doing before you push changes into an important remote repository.</p>
+<p>Moreover messing with git history and overwriting a remote repository is not for the faint-hearted.</p>
+<p>Especially if you have collaborators on your project make sure to communicate with them before taking such drastic steps as they will have to <code>rebase</code> your changes and not <code>merge</code> them as they normally would.</p>
+<p>Ultimately the best solution is to not create problems that require such drastic solutions.</p>
+<p>The only way to do so is through <code>workflow</code> and <code>tooling</code>.</p>
+<p>Consider using tools like <a href="https://github.com/awslabs/git-secrets"><code>git-secrets</code></a>, remember to start every project with a comprehensive <code>.gitignore</code> and explore better ways of secret handling like <a href="https://github.com/nemosupremo/vault-gatekeeper">vault-gatekeeper</a>.</p>
+    </div>
+    <footer class="content__footer"></footer>
+
+            </section>
+
+            <section class="page__aside">
+                <div class="aside__about">
+<div class="aside__about">
+    <img class="about__logo" src="img/portrait.jpg" alt="Logo">
+<h1 class="about__title">arghya guha</h1>
+<p class="about__description">My name is Arghya Guha and I’m a Software Engineer &amp; Systems Architect with almost a decade of experience building enterprise web applications, currently coding backends and APIs for the data science division of one of Japan’s tech giants.</p>
+</div>
+
+
+<ul class="aside__social-links">
+    
+    <li>
+        <a href="https://github.com/GuhaAG" rel="me" aria-label="GitHub" title="GitHub">
+            <i class="fab fa-github" aria-hidden="true"></i>
+        </a>
+        &nbsp;
+    </li>
+    
+    <li>
+        <a href="mailto:guha.agt@gmail.com" rel="me" aria-label="Email" title="Email">
+            <i class="fas fa-envelope" aria-hidden="true"></i>
+        </a>
+        &nbsp;
+    </li>
+    
+    <li>
+        <a href="https://www.linkedin.com/in/guha-arghya/" rel="me" aria-label="LinkedIn" title="LinkedIn">
+            <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+        </a>
+        &nbsp;
+    </li>
+    
+    <li>
+        <a href="https://twitter.com/localhost9000/" rel="me" aria-label="Twitter" title="Twitter">
+            <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+        &nbsp;
+    </li>
+    
+    <li>
+        <a href="https://dev.to/guha/" rel="me" aria-label="dev.to" title="dev.to">
+            <i class="fab fa-dev" aria-hidden="true"></i>
+        </a>
+        &nbsp;
+    </li>
+    
+</ul>
+</div>
+                <hr>
+                <div class="aside__content">
+    <p>Remove sensitive data from your git repository</p>
+    
+        <p>
+            By Arghya Guha, 
+            2020-08-10
+        </p>
+    
+
+                </div>
+            </section>
+
+            <footer class="page__footer"><p class="copyright">© 2021 Arghya Guha</p>
+<p class="advertisement">Powered by <a href="https://gohugo.io/">hugo</a> and <a href="https://github.com/joeroe/risotto">risotto</a>.</p>
+</footer>
+
+        </div>
+    </body>
+
+</html>

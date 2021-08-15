@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head><title>Kill that pesky process, the really lazy way &ndash; arghya guha</title>
+<meta name="description" content="My name is Arghya Guha and I’m a Software Engineer &amp; Systems Architect with almost a decade of experience building enterprise web applications, currently coding backends and APIs for the data science division of one of Japan’s tech giants.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+
+
+<link rel="stylesheet" href="css/colour/gruvbox-dark.css">
+<link rel="stylesheet" href="css/colour/dark-mode.css">
+<link rel="stylesheet" href="css/risotto.css">
+<link rel="stylesheet" href="css/custom.css">
+</head>
+
+    <body>
+        <div class="page">
+
+            <header class="page__header"><h1 class="page__logo"><a href="" class="page__logo-inner">arghya guha</a></h1>
+<nav class="page__nav main-nav">
+    <ul>
+    
+    
+    <li class="main-nav__item"><a class="nav-main-item" href="/about/" title="">About</a></li>
+    
+    <li class="main-nav__item"><a class="nav-main-item active" href="/post/" title="Posts">Posts</a></li>
+    
+    </ul>
+</nav>
+
+</header>
+
+            <section class="page__body">
+    <header class="content__header">
+        <h1>Kill that pesky process, the really lazy way</h1>
+    </header>
+    <div class="content__body">
+        <p>Write and use a simple bash script to kill a process to free up a port.</p>
+<p>This article was first published on my dev.to page, check it here - <a href="https://dev.to/guha/kill-that-pesky-process-the-really-lazy-way-5eg">https://dev.to/guha/kill-that-pesky-process-the-really-lazy-way-5eg</a>.</p>
+<p>This is going to a be a quick one, today i&rsquo;m going to share a small bash script that has saved me precious seconds or maybe even whole minutes over the years, every time i want to kill a process to free up a port.</p>
+<h2 id="why">Why</h2>
+<pre><code>Something is already running at port 9000
+</code></pre><p>I run into one of these every once in a while.</p>
+<p>With me it often happens when i <em>SUSPEND</em> (<kbd>CTRL</kbd>+<kbd>Z</kbd>) my dev server instead of <em>KILLING</em> (<kbd>CTRL</kbd>+<kbd>C</kbd>) it.</p>
+<p>The next steps would often involve hunting down the <code>pid</code> of the process running on that port and killing it.</p>
+<p>Easy enough, but here&rsquo;s something easier.</p>
+<h2 id="how">How</h2>
+<ol>
+<li><code>cd</code> to <code>/usr/local/bin/</code>.</li>
+<li>Create a new file and name it <code>stop</code> or anything else you want.</li>
+<li>Paste the following into it
+<pre><code>   #!/bin/bash
+   touch temp.text
+   lsof -n -i4TCP:$1 | awk '{print $2}' &gt; temp.text
+   pidToStop=`(sed '2q;d' temp.text)`
+   &gt; temp.text
+   if [[ -n $pidToStop ]]
+   then
+   kill -9 $pidToStop
+   echo &quot;!! $1 is stopped !!&quot;
+   else
+   echo &quot;Sorry nothing running on above port&quot;
+   fi
+   rm temp.text
+</code></pre><p>*disclaimer: i didn&rsquo;t write the script, i merely adopted it. Credits below.</p>
+</li>
+<li><code>chmod +x stop</code> to make the file executable. <code>chmod 755</code> also works.</li>
+<li>Now you can use <code>stop 9000</code> or any other port anytime on the terminal to stop whatever process is running on that port.</li>
+<li>Profit. Write once, use always.</li>
+</ol>
+<p><em>Very briefly, what the script above does is find the <code>pid</code> of the process running on the input port, copy it to a temp file and then read the temp file to find the <code>pid</code> in it and kill it, finally deleting the temp file.
+<code>awk</code> for those curious is a programming language used for text processing.</em></p>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>Here&rsquo;s my <a href="https://gist.github.com/GuhaAG/32ae5f04293e9075e44754785b41f8b9">gist</a> with the script above.</li>
+<li>Here&rsquo;s the stackoverflow <a href="https://stackoverflow.com/questions/24387451/how-can-i-kill-whatever-process-is-using-port-8080-so-that-i-can-vagrant-up/59986097#59986097">answer</a> i originally found this script at.</li>
+</ul>
+    </div>
+    <footer class="content__footer"></footer>
+
+            </section>
+
+            <section class="page__aside">
+                <div class="aside__about">
+<div class="aside__about">
+    <img class="about__logo" src="img/portrait.jpg" alt="Logo">
+<h1 class="about__title">arghya guha</h1>
+<p class="about__description">My name is Arghya Guha and I’m a Software Engineer &amp; Systems Architect with almost a decade of experience building enterprise web applications, currently coding backends and APIs for the data science division of one of Japan’s tech giants.</p>
+</div>
+
+
+<ul class="aside__social-links">
+    
+    <li>
+        <a href="https://github.com/GuhaAG" rel="me" aria-label="GitHub" title="GitHub">
+            <i class="fab fa-github" aria-hidden="true"></i>
+        </a>
+        &nbsp;
+    </li>
+    
+    <li>
+        <a href="mailto:guha.agt@gmail.com" rel="me" aria-label="Email" title="Email">
+            <i class="fas fa-envelope" aria-hidden="true"></i>
+        </a>
+        &nbsp;
+    </li>
+    
+    <li>
+        <a href="https://www.linkedin.com/in/guha-arghya/" rel="me" aria-label="LinkedIn" title="LinkedIn">
+            <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+        </a>
+        &nbsp;
+    </li>
+    
+    <li>
+        <a href="https://twitter.com/localhost9000/" rel="me" aria-label="Twitter" title="Twitter">
+            <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+        &nbsp;
+    </li>
+    
+    <li>
+        <a href="https://dev.to/guha/" rel="me" aria-label="dev.to" title="dev.to">
+            <i class="fab fa-dev" aria-hidden="true"></i>
+        </a>
+        &nbsp;
+    </li>
+    
+</ul>
+</div>
+                <hr>
+                <div class="aside__content">
+    <p>Kill that pesky process, the really lazy way</p>
+    
+        <p>
+            By Arghya Guha, 
+            2020-09-05
+        </p>
+    
+
+                </div>
+            </section>
+
+            <footer class="page__footer"><p class="copyright">© 2021 Arghya Guha</p>
+<p class="advertisement">Powered by <a href="https://gohugo.io/">hugo</a> and <a href="https://github.com/joeroe/risotto">risotto</a>.</p>
+</footer>
+
+        </div>
+    </body>
+
+</html>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>aws on arghya guha</title>
+    <link>/tags/aws/</link>
+    <description>Recent content in aws on arghya guha</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>© 2021 Arghya Guha</copyright>
+    <lastBuildDate>Sat, 31 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Dockerize a React app and deploy it on an AWS EC2 instance</title>
+      <link>/post/dockerize-react-app/</link>
+      <pubDate>Sat, 31 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/dockerize-react-app/</guid>
+      <description>&lt;p&gt;Dockerize a React app and deploy it on an AWS EC2 instance.&lt;/p&gt;
+&lt;p&gt;This article was first published on my dev.to page, check it here - &lt;a href=&#34;https://dev.to/guha/dockerize-a-react-app-and-deploy-it-on-an-aws-ec2-instance-2knm&#34;&gt;https://dev.to/guha/dockerize-a-react-app-and-deploy-it-on-an-aws-ec2-instance-2knm&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

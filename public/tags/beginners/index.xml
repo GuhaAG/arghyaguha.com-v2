@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>beginners on arghya guha</title>
+    <link>/tags/beginners/</link>
+    <description>Recent content in beginners on arghya guha</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>© 2021 Arghya Guha</copyright>
+    <lastBuildDate>Sat, 05 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/beginners/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kill that pesky process, the really lazy way</title>
+      <link>/post/kill-process-script/</link>
+      <pubDate>Sat, 05 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/kill-process-script/</guid>
+      <description>&lt;p&gt;Write and use a simple bash script to kill a process to free up a port.&lt;/p&gt;
+&lt;p&gt;This article was first published on my dev.to page, check it here - &lt;a href=&#34;https://dev.to/guha/kill-that-pesky-process-the-really-lazy-way-5eg&#34;&gt;https://dev.to/guha/kill-that-pesky-process-the-really-lazy-way-5eg&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

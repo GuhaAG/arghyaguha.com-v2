@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head><title>Dockerize a React app and deploy it on an AWS EC2 instance &ndash; arghya guha</title>
+<meta name="description" content="My name is Arghya Guha and I’m a Software Engineer &amp; Systems Architect with almost a decade of experience building enterprise web applications, currently coding backends and APIs for the data science division of one of Japan’s tech giants.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
+
+
+<link rel="stylesheet" href="css/colour/gruvbox-dark.css">
+<link rel="stylesheet" href="css/colour/dark-mode.css">
+<link rel="stylesheet" href="css/risotto.css">
+<link rel="stylesheet" href="css/custom.css">
+</head>
+
+    <body>
+        <div class="page">
+
+            <header class="page__header"><h1 class="page__logo"><a href="" class="page__logo-inner">arghya guha</a></h1>
+<nav class="page__nav main-nav">
+    <ul>
+    
+    
+    <li class="main-nav__item"><a class="nav-main-item" href="/about/" title="">About</a></li>
+    
+    <li class="main-nav__item"><a class="nav-main-item active" href="/post/" title="Posts">Posts</a></li>
+    
+    </ul>
+</nav>
+
+</header>
+
+            <section class="page__body">
+    <header class="content__header">
+        <h1>Dockerize a React app and deploy it on an AWS EC2 instance</h1>
+    </header>
+    <div class="content__body">
+        <p>Dockerize a React app and deploy it on an AWS EC2 instance.</p>
+<p>This article was first published on my dev.to page, check it here - <a href="https://dev.to/guha/dockerize-a-react-app-and-deploy-it-on-an-aws-ec2-instance-2knm">https://dev.to/guha/dockerize-a-react-app-and-deploy-it-on-an-aws-ec2-instance-2knm</a>.</p>
+<h3 id="why-docker-">Why Docker ?</h3>
+<p>You don&rsquo;t <em>need</em> to dockerize your app to deploy it on AWS.
+So why docker ? There are many reasons to use docker containers and I won&rsquo;t cover everything here, but personally why i would containerize any app is dependency management. Modern web applications come with loads of dependencies, and having to install everything on every environment you want to run it on, or worse yet, run it on a shared environment with other apps perhaps requiring other versions of the same libraries, is complicated. With your app residing on a docker image all you do is pull the image and run it, docker handles the rest.</p>
+<h3 id="why-ec2">Why EC2</h3>
+<p>No reason really. The steps in this post can be used to dockerize your app and then run the image on any machine you want, on the cloud or otherwise. I use ec2 in this article because it is easy and familiar, and <em>free</em> (within the free tier limit).</p>
+<h3 id="create-react-app">Create React app</h3>
+<p>For this article i am going to use a boilerplate react app using facebook&rsquo;s <code>create-react-app</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">npx create-react-app react-docker-example
+cd react-docker-example <span style="color:#f92672">&amp;&amp;</span> npm install
+npm start
+</code></pre></div><p>Check out your brand spanking new React web app at [http://localhost:3000/]</p>
+<h3 id="docker">Docker</h3>
+<p>Now let&rsquo;s create a <code>Dockerfile</code> in the root of the app.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-docker" data-lang="docker"><span style="color:#75715e"># build stage</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> node:lts-alpine as build-stage</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /app</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> package*.json ./<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> npm install<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> . .<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> npm run build     <span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># production stage</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> nginx:stable-alpine as production-stage</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> --from<span style="color:#f92672">=</span>build-stage /app/dist /usr/share/nginx/html<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 80</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;nginx&#34;</span>, <span style="color:#e6db74">&#34;-g&#34;</span>, <span style="color:#e6db74">&#34;daemon off;&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span></code></pre></div><ul>
+<li>The <code>FROM</code> image is the base image we use to run our stages. In the build stage it is a node js image since we need node js to build a react app, and in the production stage we use nginx to serve the app.</li>
+<li>In the build stage we save the build artifact and then use only that in the production stage, this saves a lot of space in our image.</li>
+<li>We serve the build artifact with nginx at a port of our choosing.</li>
+</ul>
+<p>Now let&rsquo;s run it locally to see if it works.
+First we build our docker image.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker build -t bourbonandcoding/react-docker-example .
+<span style="color:#75715e">#             ^                  ^                    ^</span>
+<span style="color:#75715e">#            tag              tag name       Dockerfile location</span>
+</code></pre></div><p>Now we run it</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker run -p 3000:80 -d bourbonandcoding/react-docker-example:latest
+<span style="color:#75715e">#              ^       ^                       ^</span>
+<span style="color:#75715e">#              |    detached mode          tag name</span>
+<span style="color:#75715e">#       host machine port : docker port</span>
+</code></pre></div><ul>
+<li>Detached mode, shown by the option <code>--detach</code> or <code>-d</code>, means that a Docker container runs in the background. It does not receive input or display output.</li>
+</ul>
+<p>Now your React app should be available again at [http://localhost:3000/]</p>
+<blockquote>
+<p><code>Image v Container</code> : A running instance of an image is called a container. If you start an image, you have a running container of this image. You can have many running containers of the same image.
+You can see all your images with  <code>docker images</code>  whereas you can see your running containers with  <code>docker ps</code>  (and you can see all containers with  <code>docker ps -a</code>).</p>
+</blockquote>
+<p>Next, we push the docker image to a repository. Let&rsquo;s use a <code>dockerhub</code> public repository.
+You need to <code>docker login</code> first with your user/pass and create a public repository. We will be pushing our image to this repository.</p>
+<p>Let&rsquo;s check the image ID first</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker images
+</code></pre></div><p>We get a list of our images and their IDs</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">REPOSITORY                              TAG         IMAGE ID 
+bourbonandcoding/react-docker-example   latest      bf3e546c6845
+</code></pre></div><p>Next we tag the image</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker tag bf3e546c6845 &lt;dockerhub-username-here&gt;/bourbonandcoding:v1
+</code></pre></div><ul>
+<li>&lt;dockerhub-username-here&gt;/bourbonandcoding is the name of my dockerhub public repository here. <code>v1</code> is the tag.</li>
+</ul>
+<p>Now we can push it to our dockerhub public repository</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker push &lt;dockerhub-username-here&gt;/bourbonandcoding:v1
+</code></pre></div><p>Now the image is pushed to a public repository accessible to everyone. We are going to be pulling it on our ec2 instance next.</p>
+<blockquote>
+<p>If you don&rsquo;t want to share your image with the world, you can also use private repositories. You get 1 private repository free with your dockerhub account and can pay for more.</p>
+</blockquote>
+<h3 id="deploy-on-ec2">Deploy on EC2</h3>
+<p>For starters, i will assume you have an aws account and have launched and started an ec2 instance, sshed into it and installed docker if necessary.</p>
+<p>Pull the previously created image from <code>dockerhub</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker pull &lt;dockerhub-username-here&gt;/bourbonandcoding:v1
+</code></pre></div><p>Then, run it</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker run -p 80:80 -d &lt;dockerhub-username-here&gt;/bourbonandcoding:v1
+</code></pre></div><p>That&rsquo;s it, since we bound it to port <code>80</code> the app should be running on the public IP of the instance now.</p>
+<blockquote>
+<p>If <code>localhost</code> is coded into your server configuration, you have to change it to <code>0.0.0.0</code> to bind it to the public IP.</p>
+</blockquote>
+<h4 id="next-steps">Next Steps</h4>
+<p>If you want to share your shiny new web page with the world wide web, you would want to get a static IP for your instance, allow TCP connections to it by changing the security group configuration and perhaps even get a domain name and attach it to the IP.</p>
+<p>Find the code used in this post <a href="https://github.com/GuhaAG/bourbonandcoding/tree/master/react-docker-example">here</a>.</p>
+    </div>
+    <footer class="content__footer"></footer>
+
+            </section>
+
+            <section class="page__aside">
+                <div class="aside__about">
+<div class="aside__about">
+    <img class="about__logo" src="img/portrait.jpg" alt="Logo">
+<h1 class="about__title">arghya guha</h1>
+<p class="about__description">My name is Arghya Guha and I’m a Software Engineer &amp; Systems Architect with almost a decade of experience building enterprise web applications, currently coding backends and APIs for the data science division of one of Japan’s tech giants.</p>
+</div>
+
+
+<ul class="aside__social-links">
+    
+    <li>
+        <a href="https://github.com/GuhaAG" rel="me" aria-label="GitHub" title="GitHub">
+            <i class="fab fa-github" aria-hidden="true"></i>
+        </a>
+        &nbsp;
+    </li>
+    
+    <li>
+        <a href="mailto:guha.agt@gmail.com" rel="me" aria-label="Email" title="Email">
+            <i class="fas fa-envelope" aria-hidden="true"></i>
+        </a>
+        &nbsp;
+    </li>
+    
+    <li>
+        <a href="https://www.linkedin.com/in/guha-arghya/" rel="me" aria-label="LinkedIn" title="LinkedIn">
+            <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+        </a>
+        &nbsp;
+    </li>
+    
+    <li>
+        <a href="https://twitter.com/localhost9000/" rel="me" aria-label="Twitter" title="Twitter">
+            <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+        &nbsp;
+    </li>
+    
+    <li>
+        <a href="https://dev.to/guha/" rel="me" aria-label="dev.to" title="dev.to">
+            <i class="fab fa-dev" aria-hidden="true"></i>
+        </a>
+        &nbsp;
+    </li>
+    
+</ul>
+</div>
+                <hr>
+                <div class="aside__content">
+    <p>Dockerize a React app and deploy it on an AWS EC2 instance.</p>
+    
+        <p>
+            By Arghya Guha, 
+            2021-07-31
+        </p>
+    
+
+                </div>
+            </section>
+
+            <footer class="page__footer"><p class="copyright">© 2021 Arghya Guha</p>
+<p class="advertisement">Powered by <a href="https://gohugo.io/">hugo</a> and <a href="https://github.com/joeroe/risotto">risotto</a>.</p>
+</footer>
+
+        </div>
+    </body>
+
+</html>
