@@ -3,17 +3,6 @@ author = "Arghya Guha"
 title = "Remove sensitive data from your git repository"
 date = "2020-08-10"
 description = "Remove sensitive data from your git repository"
-tags = [
-    "git",
-    "github",
-    "security",
-    "privacy"
-]
-categories = [
-    "security",
-    "privacy"
-]
-aliases = ["remove-git-secrets"]
 +++
 
 Remove accidentally pushed sensitive data from your git repository without leaving a trace.

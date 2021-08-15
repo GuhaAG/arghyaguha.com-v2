@@ -3,17 +3,6 @@ author = "Arghya Guha"
 title = "Kill that pesky process, the really lazy way"
 date = "2020-09-05"
 description = "Kill that pesky process, the really lazy way"
-tags = [
-    "bash",
-    "productivity",
-    "beginners",
-    "linux"
-]
-categories = [
-    "productivity",
-    "linux"
-]
-aliases = ["kill-process-script"]
 +++
 
 Write and use a simple bash script to kill a process to free up a port.

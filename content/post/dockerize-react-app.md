@@ -3,17 +3,6 @@ author = "Arghya Guha"
 title = "Dockerize a React app and deploy it on an AWS EC2 instance"
 date = "2021-07-31"
 description = "Dockerize a React app and deploy it on an AWS EC2 instance."
-tags = [
-    "docker",
-    "aws",
-    "react",
-    "javascript"
-]
-categories = [
-    "frontend",
-    "devops"
-]
-aliases = ["docker-react=app"]
 +++
 
 Dockerize a React app and deploy it on an AWS EC2 instance.
