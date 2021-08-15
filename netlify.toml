@@ -8,7 +8,22 @@ HUGO_ENV = "production"
 HUGO_ENABLEGITINFO = "true"
 
 [[redirects]]
-  from = "/about/css/*"
+  from = "/:path/css/*"
   to = "/css/:splat"
   status = 200
-# force = true
+
+[[redirects]]
+  from = "/:path/img/*"
+  to = "/img/:splat"
+  status = 200
+  
+[[redirects]]
+  from = "/:path/:title/css/*"
+  to = "/css/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/:path/:title/img/*"
+  to = "/img/:splat"
+  status = 200    
+  
