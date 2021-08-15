@@ -1,7 +1,6 @@
 +++
 title = "Homepage"
 description = "Homepage of this site - Arghya Guha"
-aliases = ["home"]
 author = "Arghya Guha"
 +++
 
