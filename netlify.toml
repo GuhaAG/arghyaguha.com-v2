@@ -28,3 +28,15 @@ HUGO_VERSION = "0.87.0"
 
 [context.next.environment]
 HUGO_ENABLEGITINFO = "true"
+
+[[redirects]]
+  from = "/about/css/*"
+  to = "/css/*"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/post/css/*"
+  to = "/css/*"
+  status = 301
+  force = true 
