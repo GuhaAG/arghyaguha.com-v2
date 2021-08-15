@@ -1,6 +1,7 @@
 +++
 title = "About"
 description = "About the author of this site - Arghya Guha"
+aliases = ["about-us", "contact"]
 author = "Arghya Guha"
 +++
 
