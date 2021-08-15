@@ -1,103 +1,101 @@
-baseURL = ''
-defaultContentLanguage = 'en'
-# Emoji in markdown files
-enableEmoji = true
-languageCode = 'en-us'
-# Number of blog post per page
-paginate = 10
-theme = 'pico'
-# Title of the website is used for the meta tag title
-# and the square icon (except favicon)
-title = 'Arghya Guha'
+baseURL = "https://risotto.joeroe.io"
+theme = "risotto"
+title = "arghya guha"
+author = "Arghya Guha"
+copyright = "© 2021 Arghya Guha"
+paginate = 3
+languageCode = "en"
+DefaultContentLanguage = "en"
+enableInlineShortcodes = true
+# prevent build failures when using Hugo's Instagram shortcode due to deprecated Instagram API.
+# See https://github.com/gohugoio/hugo/issues/7228#issuecomment-714490456
+ignoreErrors = ["error-remote-getjson"]
+
+# Automatically add content sections to main menu
+sectionPagesMenu = "main"
 
 [params]
-customCSS = [
-	"style/style.css",
-	"style/theme.sass",
-] # Path relative to assets folder
-customJS = ["js/console.js"] # Path relative to assets folder
-# Homepage description
-# For blog page description you can overwrite it 
-# in the front matter
-description = "Arghya Guha's personal website"
-email = "guha.agt@gmail.com"
-favicon = '/favicon.png'
 
-# Social parameters for contact_icons widget
-[[params.social]]
-alt = "email icon"
-icon = "/icons/email.svg"
-name = "email"
-url = "mailto:guha.agt@gmail.com"
+[params.theme]
+palette = "gruvbox-dark"
+mode = "dark-mode"
 
-[[params.social]]
-alt = "github icon"
-blank = true
-icon = "/icons/github.svg"
-name = "github"
+# Sidebar: about/bio
+[params.about]
+title = "arghya guha"
+description = "My name is Arghya Guha and I’m a Software Engineer & Systems Architect with almost a decade of experience building enterprise web applications, currently coding backends and APIs for the data science division of one of Japan’s tech giants."
+logo = "img/portrait.jpg"
+
+# Sidebar: social links
+# Available icon sets:
+# * FontAwesome 5 <https://fontawesome.com/> ('fas fa-' or 'fab-fa' for brands)
+# * Academicons <https://jpswalsh.github.io/academicons> ('ai ai-')
+
+[[params.socialLinks]]
+icon = "fab fa-github"
+title = "GitHub"
 url = "https://github.com/GuhaAG"
 
-[[params.social]]
-alt = "twitter icon"
-blank = true
-icon = "/icons/twitter.svg"
-name = "twitter"
-url = "https://twitter.com/CodingBourbon"
+[[params.socialLinks]]
+icon = "fas fa-envelope"
+title = "Email"
+url = "mailto:guha.agt@gmail.com"
 
-[[params.social]]
-alt = "linkedin icon"
-blank = true
-icon = "/icons/linkedin.svg"
-name = "linkedin"
-url = "https://www.linkedin.com/in/arghya-guha-2a318253/"
+[[params.socialLinks]]
+icon = "fab fa-linkedin-in"
+title = "LinkedIn"
+url = "https://www.linkedin.com/in/guha-arghya/"
 
-[[params.social]]
-alt = "devto icon"
-blank = true
-icon = "/icons/dev-icon.svg"
-name = "devto"
-url = "https://dev.to/guha"
+[[params.socialLinks]]
+icon = "fab fa-twitter"
+title = "Twitter"
+url = "https://twitter.com/localhost9000/"
 
+[[params.socialLinks]]
+icon = "fab fa-dev"
+title = "dev.to"
+url = "https://dev.to/guha/"
 
-# Navigation bar
 [menu]
 
-[[menu.main]]
-identifier = "home" # identifier is use for translations
-pre = "" # pre is inserted before the translation (icons, image, etc)
-url = "/" 
-weight = 10 
-
-[[menu.main]]
-identifier = "blog" # identifier is use for translations
-pre = "" # pre is inserted before the translation (icons, image, etc)
-url = "/blog" 
-weight = 20 
-
-[[menu.main]]
-identifier = "contact" # identifier is use for translations
-pre = "" # pre is inserted before the translation (icons, image, etc)
-url = "/#contact" 
-weight = 30 
-
-# Syntax highlightning
-[markup.highlight]
-guessSyntax = true 
-lineNumbersInTable = true 
-noClasses = false # Set to false to use the Pico default theme.
-tabWidth = 2 
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about/"
+    weight = 10
 
 [taxonomies]
 category = "categories"
 tag = "tags"
+series = "series"
 
-# Translation
-# English and French are supported but you can contribute
-# by adding translation to i18n/ folder.
-[languages.en]
-contentDir = 'content/en'
-languageCode = 'en'
-languageName = 'English'
-weight = 0
+# For hugo >= 0.60.0, enable inline HTML
+[markup.goldmark.renderer]
+unsafe = true
 
-googleAnalytics = "UA-153531090-1"
+[privacy]
+
+  [privacy.vimeo]
+    disabled = false
+    simple = true
+
+  [privacy.twitter]
+    disabled = false
+    enableDNT = true
+    simple = true
+
+  [privacy.instagram]
+    disabled = false
+    simple = true
+
+  [privacy.youtube]
+    disabled = false
+    privacyEnhanced = true
+
+[services]
+
+  [services.instagram]
+    disableInlineCSS = true
+
+  [services.twitter]
+    disableInlineCSS = true

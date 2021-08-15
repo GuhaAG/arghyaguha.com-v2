@@ -1,13 +1,12 @@
 {
-	"name": "sponge-bob-pico",
-	"version": "1.0.0",
-	"description": "",
+	"name": "arghyaguha-website",
+	"version": "2.0.0",
+	"description": "arghya guha's personal website",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [],
-	"author": "Alexandre Negrel",
-	"license": "MIT",
+	"author": "Arghya Guha",
 	"dependencies": {
 		"@fullhuman/postcss-purgecss": "^2.3.0",
 		"autoprefixer": "^9.8.6",
