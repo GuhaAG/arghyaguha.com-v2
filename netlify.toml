@@ -1,48 +1,8 @@
 [build]
-command = "hugo --gc --minify"
+command = "hugo"
 publish = "public"
 
 [context.production.environment]
 HUGO_ENABLEGITINFO = "true"
 HUGO_ENV           = "production"
-HUGO_VERSION       = "0.73.0"
-
-[context.split1]
-command = "hugo --gc --minify --enableGitInfo"
-
-	[context.split1.environment]
-	HUGO_ENV     = "production"
-	HUGO_VERSION = "0.73.0"
-
-[context.deploy-preview]
-command = "hugo --gc --minify --buildFuture -b $DEPLOY_PRIME_URL"
-
-	[context.deploy-preview.environment]
-	HUGO_VERSION = "0.73.0"
-
-[context.branch-deploy]
-command = "hugo --gc --minify -b $DEPLOY_PRIME_URL"
-
-	[context.branch-deploy.environment]
-	HUGO_VERSION = "0.73.0"
-
-[context.next.environment]
-HUGO_ENABLEGITINFO = "true"
-
-[[redirects]]
-  from = "/blog"
-  to = "https://dev.to/guha"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/resume"
-  to = "https://drive.google.com/file/d/1QfZ5IwYYpU-Vs7e0-iJ8lHTCZQMpY7BU/view"
-  status = 301
-  force = true   
-
-[[redirects]]
-  from = "/about"
-  to = "/"
-  status = 301
-  force = true
+HUGO_VERSION       = "0.87.0"
