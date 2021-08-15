@@ -1,4 +1,4 @@
-baseURL = "www.arghyaguha.com"
+baseURL = "https://arghyaguha.com"
 theme = "risotto"
 title = "arghya guha"
 author = "Arghya Guha"
@@ -15,7 +15,6 @@ ignoreErrors = ["error-remote-getjson"]
 sectionPagesMenu = "main"
 
 [params]
-favicon = '/favicon.png'
 
 [params.theme]
 palette = "gruvbox-dark"
