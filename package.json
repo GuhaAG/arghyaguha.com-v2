@@ -3,6 +3,7 @@
 	"version": "2.0.0",
 	"description": "arghya guha's personal website",
 	"scripts": {
+		"start": "hugo server",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [],
@@ -16,6 +17,7 @@
 		"tailwindcss": "^1.8.3"
 	},
 	"devDependencies": {
+		"hugo-extended": "^0.87.0",
 		"npm-check-updates": "^8.1.0"
 	}
 }
