@@ -23,7 +23,7 @@ mode = "dark-mode"
 # Sidebar: about/bio
 [params.about]
 title = "arghya guha"
-description = "My name is Arghya Guha and I’m a Software Engineer & Systems Architect with almost a decade of experience building enterprise web applications, currently coding backends and APIs for the data science division of one of Japan’s tech giants."
+description = "Hey, I'm Guha and I’m a Software Engineer & Systems Architect with a decade of experience building enterprise web applications, currently coding backends and APIs for the ID Platform of Japan’s first unicorn."
 logo = "img/portrait.jpg"
 
 # Sidebar: social links
